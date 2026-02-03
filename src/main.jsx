@@ -8,6 +8,7 @@ import About from "./pages/About.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import Hello from "./pages/Hello.jsx";
 import ChatRoom from "./pages/ChatRoom.jsx";
+import UploadResume from "./pages/UploadResume.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "contact-us", element: <ContactUs /> },
       { path: "hello/:name", element: <Hello /> },
       { path: "chat", element: <ChatRoom /> },
+      { path: "upload-resume", element: <UploadResume /> },
     ],
   },
 ]);
