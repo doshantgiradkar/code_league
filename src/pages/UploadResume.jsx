@@ -185,7 +185,7 @@ export default function UploadResume() {
       <div className="relative z-10 container mx-auto max-w-5xl">
         {/* Header */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-12 "
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -193,7 +193,7 @@ export default function UploadResume() {
             <Sparkles className="w-4 h-4 text-cyan-400" />
             <span className="text-sm font-medium text-cyan-300">AI-Powered Analysis</span>
           </div>
-          <h1 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-100 to-violet-200 bg-clip-text text-transparent">
+          <h1 className="text-6xl z-50 md:text-7xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-100 to-violet-200 bg-clip-text text-transparent">
             Resume Intelligence
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">

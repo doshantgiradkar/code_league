@@ -572,61 +572,6 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="relative z-10 px-4 py-12 border-t border-slate-800/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="font-semibold text-white mb-4">Product</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Features</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Pricing</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">FAQ</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-white mb-4">Company</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">About</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Blog</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Careers</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-white mb-4">Resources</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Documentation</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Support</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-white mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Privacy</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Terms</a></li>
-                <li><a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Security</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-slate-800/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-cyan-400" />
-              <span className="text-white font-semibold text-lg">Resume AI</span>
-            </div>
-            <p className="text-slate-400 text-sm">
-              © 2026 Resume AI. All rights reserved.
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Twitter</a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">LinkedIn</a>
-              <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">GitHub</a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
