@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+:root {
+    --tw-gradient-position: to bottom right;
+    @supports (background-image: linear-gradient(in lab, red, red)) {
+        --tw-gradient-position: to bottom right in oklab;
+    }
+    background-image: linear-gradient(var(--tw-gradient-stops));
+    --tw-gradient-from: var(--color-slate-950) /* oklch(12.9% 0.042 264.695) = #020618 */;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    --tw-gradient-via: var(--color-slate-900) /* oklch(20.8% 0.042 265.755) = #0f172b */;
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops)
+}

@@ -4,7 +4,7 @@ import { ContextProvider } from "./contexts/GlobalContext";
 const App = () => {
   return (
     <ContextProvider>
-        <main className="grow flex flex-col items-center justify-center">
+        <main className="grow flex flex-col w-full">
           <Outlet />
         </main>
     </ContextProvider>

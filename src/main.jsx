@@ -11,6 +11,8 @@ import ChatRoom from "./pages/ChatRoom.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import UploadResumeExample from "./pages/UploadResumeExample.jsx";
+import UploadResume from "./pages/UploadResume.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -23,9 +25,13 @@ const router = createBrowserRouter([
       { path: "contact-us", element: <ContactUs /> },
       { path: "hello/:name", element: <Hello /> },
       { path: "chat", element: <ChatRoom /> },
+
       { path: "upload-resume-example", element: <UploadResumeExample /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+
+      { path: "upload-resume", element: <UploadResume /> },
+
     ],
   },
 ]);
