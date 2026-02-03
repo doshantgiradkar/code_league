@@ -16,7 +16,7 @@ import {
   setDoc
 } from "firebase/firestore";
 import {auth,db,app,storage} from './firebaseConfig'
-
+import { supabase } from "./supabaseConfig";
 
 
 /**
@@ -408,3 +408,63 @@ export const removeFromArrayField = async (collectionName, docId, fieldName, val
   }
 };
 
+
+/**
+ * Upload a file to Supabase Storage
+ * @param {Object} params
+ * @param {File} params.file - File object
+ * @param {string} params.bucket - Bucket name
+ * @param {string} params.userId - User ID
+ * @param {string} params.folder - Optional folder (resume, certificates, etc.)
+ * @param {boolean} params.upsert - Replace file if exists
+ */
+export const uploadFile = async ({
+  file,
+  bucket,
+  userId,
+  folder = "",
+  upsert = false,
+}) => {
+  if (!file || !bucket || !userId) {
+    throw new Error("Missing required parameters");
+  }
+
+  const fileExt = file.name.split(".").pop();
+  const fileName = `${Date.now()}.${fileExt}`;
+  const filePath = `${userId}/${folder}/${fileName}`.replace("//", "/");
+
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .upload(filePath, file, {
+      cacheControl: "3600",
+      upsert,
+    });
+
+  if (error) throw error;
+
+  return {
+    path: data.path,
+    fileName,
+  };
+};
+
+
+/**
+ * Delete a file from Supabase Storage
+ * @param {Object} params
+ * @param {string} params.bucket - Bucket name
+ * @param {string} params.filePath - Full file path
+ */
+export const deleteFile = async ({ bucket, filePath }) => {
+  if (!bucket || !filePath) {
+    throw new Error("Missing required parameters");
+  }
+
+  const { error } = await supabase.storage
+    .from(bucket)
+    .remove([filePath]);
+
+  if (error) throw error;
+
+  return true;
+};
