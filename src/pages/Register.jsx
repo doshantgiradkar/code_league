@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
   ArrowRight,
-  Sparkles, 
-  CheckCircle2, 
+  Sparkles,
+  CheckCircle2,
   AlertCircle,
   User,
-  Shield
+  Shield,
+  Briefcase
 } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { USER_ROLES } from '../lib/constants';
 
 const Register = () => {
+  const { register } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: USER_ROLES.LEARNER, // Default to learner role
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -39,7 +47,7 @@ const Register = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     // Personal Info Validation
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
@@ -48,7 +56,7 @@ const Register = () => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    
+
     // Password Validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
@@ -57,44 +65,43 @@ const Register = () => {
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
       newErrors.password = 'Password must contain uppercase, lowercase, and numbers';
     }
-    
+
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    
+
     if (!agreedToTerms) {
       newErrors.terms = 'You must agree to the terms and conditions';
     }
-    
+
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
-    
+
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setErrors({});
 
-      // Simulate API call
-      setTimeout(() => {
+      try {
+        const displayName = `${formData.firstName} ${formData.lastName}`;
+        await register(formData.email, formData.password, displayName, formData.role);
+
         setSuccess(true);
+        toast.success('Account created successfully!');
+
         setTimeout(() => {
-          setIsLoading(false);
-          // Reset form after success
-          setFormData({
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-          });
-          setAgreedToTerms(false);
+          navigate('/dashboard');
         }, 1500);
-      }, 2000);
+      } catch (error) {
+        toast.error(error.message || 'Registration failed');
+        setErrors({ email: 'Registration failed. Please try again.' });
+        setIsLoading(false);
+      }
     } else {
       setErrors(newErrors);
     }
@@ -208,7 +215,7 @@ const Register = () => {
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Grid Pattern */}
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{
             backgroundImage: `
@@ -219,7 +226,7 @@ const Register = () => {
             maskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)'
           }}
         />
-        
+
         {/* Glowing Orbs */}
         <motion.div
           variants={pulseVariants}
@@ -259,7 +266,7 @@ const Register = () => {
 
         {/* Headline */}
         <motion.div variants={itemVariants} className="text-center mb-6">
-          <h1 
+          <h1
             className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-100 to-violet-200 bg-clip-text text-transparent"
             style={{ lineHeight: 1, letterSpacing: '-0.02em' }}
           >
@@ -292,9 +299,8 @@ const Register = () => {
                     type="text"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className={`w-full pl-12 pr-4 py-3 bg-slate-800/30 border-2 ${
-                      errors.firstName ? 'border-red-500/50' : 'border-slate-700'
-                    } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
+                    className={`w-full pl-12 pr-4 py-3 bg-slate-800/30 border-2 ${errors.firstName ? 'border-red-500/50' : 'border-slate-700'
+                      } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
                     placeholder="John"
                     disabled={isLoading || success}
                   />
@@ -325,9 +331,8 @@ const Register = () => {
                     type="text"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className={`w-full pl-12 pr-4 py-3 bg-slate-800/30 border-2 ${
-                      errors.lastName ? 'border-red-500/50' : 'border-slate-700'
-                    } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
+                    className={`w-full pl-12 pr-4 py-3 bg-slate-800/30 border-2 ${errors.lastName ? 'border-red-500/50' : 'border-slate-700'
+                      } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
                     placeholder="Doe"
                     disabled={isLoading || success}
                   />
@@ -360,9 +365,8 @@ const Register = () => {
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full pl-12 pr-4 py-3 bg-slate-800/30 border-2 ${
-                    errors.email ? 'border-red-500/50' : 'border-slate-700'
-                  } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
+                  className={`w-full pl-12 pr-4 py-3 bg-slate-800/30 border-2 ${errors.email ? 'border-red-500/50' : 'border-slate-700'
+                    } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
                   placeholder="you@example.com"
                   disabled={isLoading || success}
                 />
@@ -394,9 +398,8 @@ const Register = () => {
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`w-full pl-12 pr-12 py-3 bg-slate-800/30 border-2 ${
-                    errors.password ? 'border-red-500/50' : 'border-slate-700'
-                  } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
+                  className={`w-full pl-12 pr-12 py-3 bg-slate-800/30 border-2 ${errors.password ? 'border-red-500/50' : 'border-slate-700'
+                    } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
                   placeholder="Create a strong password"
                   disabled={isLoading || success}
                 />
@@ -419,7 +422,7 @@ const Register = () => {
                   {errors.password}
                 </motion.p>
               )}
-              
+
               {/* Password Strength Indicator */}
               {formData.password && (
                 <motion.div
@@ -429,11 +432,10 @@ const Register = () => {
                 >
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-slate-400">Password strength:</span>
-                    <span className={`font-medium ${
-                      passwordStrength() < 40 ? 'text-red-400' :
+                    <span className={`font-medium ${passwordStrength() < 40 ? 'text-red-400' :
                       passwordStrength() < 70 ? 'text-yellow-400' :
-                      'text-green-400'
-                    }`}>
+                        'text-green-400'
+                      }`}>
                       {getStrengthText()}
                     </span>
                   </div>
@@ -447,21 +449,18 @@ const Register = () => {
                   </div>
                   <div className="text-xs text-slate-500 space-y-1 mt-2">
                     <div className="flex items-center gap-2">
-                      <div className={`w-1.5 h-1.5 rounded-full ${
-                        formData.password.length >= 8 ? 'bg-green-500' : 'bg-slate-700'
-                      }`} />
+                      <div className={`w-1.5 h-1.5 rounded-full ${formData.password.length >= 8 ? 'bg-green-500' : 'bg-slate-700'
+                        }`} />
                       <span>At least 8 characters</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className={`w-1.5 h-1.5 rounded-full ${
-                        /[a-z]/.test(formData.password) && /[A-Z]/.test(formData.password) ? 'bg-green-500' : 'bg-slate-700'
-                      }`} />
+                      <div className={`w-1.5 h-1.5 rounded-full ${/[a-z]/.test(formData.password) && /[A-Z]/.test(formData.password) ? 'bg-green-500' : 'bg-slate-700'
+                        }`} />
                       <span>Uppercase and lowercase letters</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className={`w-1.5 h-1.5 rounded-full ${
-                        /\d/.test(formData.password) ? 'bg-green-500' : 'bg-slate-700'
-                      }`} />
+                      <div className={`w-1.5 h-1.5 rounded-full ${/\d/.test(formData.password) ? 'bg-green-500' : 'bg-slate-700'
+                        }`} />
                       <span>At least one number</span>
                     </div>
                   </div>
@@ -484,9 +483,8 @@ const Register = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className={`w-full pl-12 pr-12 py-3 bg-slate-800/30 border-2 ${
-                    errors.confirmPassword ? 'border-red-500/50' : 'border-slate-700'
-                  } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
+                  className={`w-full pl-12 pr-12 py-3 bg-slate-800/30 border-2 ${errors.confirmPassword ? 'border-red-500/50' : 'border-slate-700'
+                    } rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-800/50 transition-all duration-300`}
                   placeholder="Re-enter your password"
                   disabled={isLoading || success}
                 />
@@ -533,9 +531,8 @@ const Register = () => {
                       setErrors(prev => ({ ...prev, terms: '' }));
                     }
                   }}
-                  className={`mt-0.5 w-5 h-5 rounded border-2 ${
-                    errors.terms ? 'border-red-500/50' : 'border-slate-700'
-                  } bg-slate-800/30 text-cyan-500 focus:ring-2 focus:ring-cyan-500/20 focus:ring-offset-0 transition-all`}
+                  className={`mt-0.5 w-5 h-5 rounded border-2 ${errors.terms ? 'border-red-500/50' : 'border-slate-700'
+                    } bg-slate-800/30 text-cyan-500 focus:ring-2 focus:ring-cyan-500/20 focus:ring-offset-0 transition-all`}
                   disabled={isLoading || success}
                 />
                 <span className="text-sm text-slate-400 group-hover:text-slate-300 transition-colors">

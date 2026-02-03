@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -13,20 +18,27 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      if (email && password) {
-        setSuccess(true);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1500);
-      } else {
-        setError('Please fill in all fields');
-        setIsLoading(false);
-      }
-    }, 1500);
+    try {
+      await login(email, password);
+      setSuccess(true);
+      toast.success('Login successful!');
+
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
+    } catch (err) {
+      setError(err.message || 'Invalid email or password');
+      toast.error('Login failed');
+      setIsLoading(false);
+    }
   };
 
   // Animation variants
@@ -96,7 +108,7 @@ const Login = () => {
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Grid Pattern */}
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{
             backgroundImage: `
@@ -107,7 +119,7 @@ const Login = () => {
             maskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)'
           }}
         />
-        
+
         {/* Glowing Orbs */}
         <motion.div
           variants={pulseVariants}
@@ -147,7 +159,7 @@ const Login = () => {
 
         {/* Headline */}
         <motion.div variants={itemVariants} className="text-center mb-6">
-          <h1 
+          <h1
             className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-100 to-violet-200 bg-clip-text text-transparent"
             style={{ lineHeight: 1, letterSpacing: '-0.02em' }}
           >
