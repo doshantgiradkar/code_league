@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { uploadFile,deleteFile } from "../firebase/helperFunction";
-export default function UploadResume() {
+export default function UploadResumeExample() {
   const [file, setFile] = useState(null);
   const [uploadedPath, setUploadedPath] = useState("");
   const [loading, setLoading] = useState(false);

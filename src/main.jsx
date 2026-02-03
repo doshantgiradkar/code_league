@@ -8,9 +8,9 @@ import About from "./pages/About.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import Hello from "./pages/Hello.jsx";
 import ChatRoom from "./pages/ChatRoom.jsx";
-import UploadResume from "./pages/UploadResume.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import UploadResumeExample from "./pages/UploadResumeExample.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       { path: "contact-us", element: <ContactUs /> },
       { path: "hello/:name", element: <Hello /> },
       { path: "chat", element: <ChatRoom /> },
-      { path: "upload-resume", element: <UploadResume /> },
+      { path: "upload-resume-example", element: <UploadResumeExample /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
     ],
